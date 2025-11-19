@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 // User Profile
 export interface User {
   uid: string;
@@ -36,3 +38,9 @@ export const mockUser: User = {
     role: 'senior',
     connectedDevices: [],
 }
+
+export const mockMissions: Mission[] = [
+    { id: 'mission1', title: '아침 약 드시기', isCompleted: false, type: 'medication', date: format(new Date(), 'yyyy-MM-dd') },
+    { id: 'mission2', title: '혈압 측정하기', isCompleted: false, type: 'measure', date: format(new Date(), 'yyyy-MM-dd') },
+    { id: 'mission3', title: '30분 걷기', isCompleted: false, type: 'exercise', date: format(new Date(), 'yyyy-MM-dd') },
+];
