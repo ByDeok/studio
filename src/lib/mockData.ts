@@ -1,4 +1,5 @@
-import { format, subDays } from 'date-fns';
+import { format, subDays, subHours, formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
 
 // User Profile
 export interface User {
@@ -28,6 +29,26 @@ export interface HealthMetric {
   steps?: number; // 걸음 수
   source: string; // "manual" | "device"
 }
+
+// Family Member
+export interface FamilyMember {
+    uid: string;
+    name: string;
+    relation: string; // "나", "어머니", "동생"
+    role: 'admin' | 'subject' | 'viewer';
+    avatarUrl?: string;
+}
+
+// Activity Feed
+export interface Activity {
+    id: string;
+    userId: string;
+    type: 'medication' | 'measure';
+    description: string; // "아침 약을 복용하셨습니다.", "혈압을 측정하셨습니다."
+    details?: string; // "120/80 mmHg"
+    timestamp: string;
+}
+
 
 // Mock Data Instances
 export const mockUser: User = {
@@ -68,3 +89,43 @@ mockHealthMetrics[50].systolic = 150;
 mockHealthMetrics[55].glucose = 130;
 mockHealthMetrics[80].glucose = 65;
 mockHealthMetrics[85].systolic = 88;
+
+
+export const mockFamilyMembers: FamilyMember[] = [
+    { uid: 'user_me', name: '김보호', relation: '나', role: 'admin' },
+    { uid: 'user_mother', name: '박영희', relation: '어머니', role: 'subject' },
+    { uid: 'user_sister', name: '김영희', relation: '동생', role: 'viewer' },
+];
+
+export const mockActivityFeed: Activity[] = [
+    { 
+        id: 'act1', 
+        userId: 'user_mother', 
+        type: 'measure', 
+        description: '혈압을 측정하셨습니다.', 
+        details: '135/85 mmHg',
+        timestamp: formatDistanceToNow(subHours(new Date(), 1), { addSuffix: true, locale: ko })
+    },
+    { 
+        id: 'act2', 
+        userId: 'user_mother', 
+        type: 'medication', 
+        description: '아침 약을 복용하셨습니다.', 
+        timestamp: formatDistanceToNow(subHours(new Date(), 2), { addSuffix: true, locale: ko })
+    },
+     { 
+        id: 'act3', 
+        userId: 'user_mother', 
+        type: 'measure', 
+        description: '혈당을 측정하셨습니다.', 
+        details: '140 mg/dL',
+        timestamp: formatDistanceToNow(subHours(new Date(), 8), { addSuffix: true, locale: ko })
+    },
+    { 
+        id: 'act4', 
+        userId: 'user_mother', 
+        type: 'medication', 
+        description: '저녁 약을 복용하셨습니다.', 
+        timestamp: formatDistanceToNow(subHours(new Date(), 13), { addSuffix: true, locale: ko })
+    },
+];
