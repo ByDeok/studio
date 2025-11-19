@@ -1,4 +1,4 @@
-# Firebase Studio
+# AS-Digt-HC-Dev-FE
 
 This is a NextJS starter in Firebase Studio.
 
