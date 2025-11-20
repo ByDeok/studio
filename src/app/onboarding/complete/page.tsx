@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { PartyPopper } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function OnboardingCompletePage() {
-  const router = useRouter();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace("/dashboard");
+      navigate("/dashboard", { replace: true });
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [router]);
+  }, [navigate]);
 
   return (
     <Card className="w-full border-0 shadow-none bg-transparent sm:border sm:shadow-sm sm:bg-card">

@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/icons/logo';
 
@@ -15,7 +15,7 @@ export default function Home() {
             건강한 오늘, 활기찬 내일
           </p>
         </div>
-        <Link href="/onboarding" className="w-full max-w-sm">
+        <Link to="/onboarding" className="w-full max-w-sm">
           <Button size="xl" className="w-full">
             시작하기
           </Button>

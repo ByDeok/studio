@@ -1,7 +1,4 @@
-"use client";
-
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -18,7 +15,6 @@ export default function DashboardPage() {
   const [windowSize, setWindowSize] = useState<{ width: number; height: number; }>({ width: 0, height: 0 });
 
   const { toast } = useToast();
-  const router = useRouter();
 
   useEffect(() => {
     const handleResize = () => {

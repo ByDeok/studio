@@ -1,9 +1,6 @@
-"use client";
-
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Home, BarChart2, Users, Settings, CircleUser } from 'lucide-react';
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Home, BarChart2, Users, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
   Popover,
@@ -27,7 +24,8 @@ export default function MainAppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  const location = useLocation();
+  const pathname = location.pathname;
 
   const isSettingsActive = pathname.startsWith(settingsNav.href);
 
@@ -39,7 +37,7 @@ export default function MainAppLayout({
           {navItems.map(({ href, label, icon: Icon }) => (
             <Link
               key={href}
-              href={href}
+              to={href}
               className={cn(
                 'flex flex-col items-center justify-center w-full pt-2 pb-1 text-sm transition-colors',
                 pathname === href
@@ -73,13 +71,13 @@ export default function MainAppLayout({
                             앱 관련 설정을 변경할 수 있습니다.
                         </p>
                     </div>
-                     <Link href="/settings/profile" passHref>
+                    <Link to="/settings/profile">
                         <Button variant="ghost" className="w-full justify-start">내 정보 수정</Button>
                     </Link>
-                    <Link href="/settings/notifications" passHref>
+                    <Link to="/settings/notifications">
                         <Button variant="ghost" className="w-full justify-start">알림 설정</Button>
                     </Link>
-                    <Link href="/" passHref>
+                    <Link to="/">
                         <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600">로그아웃</Button>
                     </Link>
                 </div>

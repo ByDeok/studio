@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { KakaoIcon } from "@/components/icons/kakao";
@@ -10,12 +10,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export default function OnboardingAuthPage() {
   const [isLoading, setIsLoading] = useState<null | "kakao" | "naver">(null);
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleLogin = (provider: "kakao" | "naver") => {
     setIsLoading(provider);
     setTimeout(() => {
-      router.push("/onboarding/profile");
+      navigate("/onboarding/profile");
     }, 1000);
   };
 

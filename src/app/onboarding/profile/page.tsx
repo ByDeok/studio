@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,12 +22,12 @@ export default function OnboardingProfilePage() {
     gender: "",
     conditions: [] as string[],
   });
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleNext = () => {
     if (step === "name") setStep("birthdate");
     else if (step === "birthdate") setStep("conditions");
-    else if (step === "conditions") router.push("/onboarding/device");
+    else if (step === "conditions") navigate("/onboarding/device");
   };
 
   const handleBack = () => {

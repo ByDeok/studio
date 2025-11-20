@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, HeartPulse, Loader2, Watch } from "lucide-react";
@@ -15,7 +15,7 @@ const devices = [
 
 export default function OnboardingDevicePage() {
   const [deviceStatuses, setDeviceStatuses] = useState<Record<string, DeviceStatus>>({});
-  const router = useRouter();
+  const navigate = useNavigate();
 
   const handleConnect = (deviceId: string) => {
     setDeviceStatuses(prev => ({ ...prev, [deviceId]: "connecting" }));
@@ -25,7 +25,7 @@ export default function OnboardingDevicePage() {
   };
 
   const handleNext = () => {
-    router.push("/onboarding/complete");
+    navigate("/onboarding/complete");
   };
 
   return (
