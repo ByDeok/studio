@@ -1,3 +1,14 @@
+// src/app/onboarding/profile/page.tsx
+/**
+ * 스크립트 용도: 온보딩 - 사용자 프로필 입력 페이지
+ * 
+ * 함수 호출 구조:
+ * OnboardingProfilePage
+ * └── Card (Form Container)
+ *     ├── Progress (Step Indicator)
+ *     └── Input / RadioGroup / Checkbox (Form Fields)
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -14,6 +25,13 @@ type Step = "name" | "birthdate" | "conditions";
 
 const conditionsList = ["고혈압", "당뇨", "고지혈증", "관절염"];
 
+/**
+ * 프로그램 단위 용도: 사용자 기본 정보(이름, 생년월일, 성별, 기저질환)를 수집하는 다단계 양식
+ * 기능:
+ * - 단계별 입력 폼 제공 (이름 -> 생년월일 -> 건강정보)
+ * - 진행률(Progress Bar) 표시
+ * - 이전/다음 네비게이션
+ */
 export default function OnboardingProfilePage() {
   const [step, setStep] = useState<Step>("name");
   const [formData, setFormData] = useState({

@@ -1,3 +1,12 @@
+// src/components/ui/button.tsx
+/**
+ * 스크립트 용도: 공통 버튼 컴포넌트
+ * 
+ * 함수 호출 구조:
+ * Button
+ * └── Slot (Radix UI) or 'button'
+ */
+
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
@@ -43,6 +52,9 @@ export interface ButtonProps
   asChild?: boolean
 }
 
+/**
+ * 프로그램 단위 용도: 다양한 스타일(variant)과 크기(size)를 지원하는 재사용 가능한 버튼
+ */
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, withIcon, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"

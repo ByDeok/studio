@@ -1,3 +1,13 @@
+// src/hooks/use-toast.ts
+/**
+ * 스크립트 용도: Toast 알림 관리를 위한 커스텀 훅
+ * 
+ * 함수 호출 구조:
+ * useToast
+ * └── dispatch (State Updates)
+ *     └── reducer (Action Handling)
+ */
+
 "use client"
 
 // Inspired by react-hot-toast library
@@ -171,6 +181,9 @@ function toast({ ...props }: Toast) {
   }
 }
 
+/**
+ * 프로그램 단위 용도: 토스트 알림 상태를 구독하고 제어하는 Hook
+ */
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 

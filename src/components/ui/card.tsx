@@ -1,7 +1,23 @@
+// src/components/ui/card.tsx
+/**
+ * 스크립트 용도: 카드 스타일의 컨테이너 컴포넌트
+ * 
+ * 함수 호출 구조:
+ * Card (Root)
+ * ├── CardHeader
+ * │   ├── CardTitle
+ * │   └── CardDescription
+ * ├── CardContent
+ * └── CardFooter
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * 프로그램 단위 용도: 콘텐츠를 그룹화하여 표시하는 카드 컨테이너
+ */
 const Card = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>

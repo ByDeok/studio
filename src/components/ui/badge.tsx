@@ -1,3 +1,8 @@
+// src/components/ui/badge.tsx
+/**
+ * 스크립트 용도: 뱃지(상태 표시 태그) 컴포넌트
+ */
+
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 
@@ -27,6 +32,9 @@ export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof badgeVariants> {}
 
+/**
+ * 프로그램 단위 용도: 상태나 카테고리를 짧은 텍스트로 표시하는 태그 UI
+ */
 function Badge({ className, variant, ...props }: BadgeProps) {
   return (
     <div className={cn(badgeVariants({ variant }), className)} {...props} />

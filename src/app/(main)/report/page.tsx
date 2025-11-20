@@ -1,3 +1,18 @@
+// src/app/(main)/report/page.tsx
+/**
+ * 스크립트 용도: 건강 리포트 페이지 (차트 시각화)
+ * 
+ * 함수 호출 구조:
+ * ReportPage
+ * ├── Header (Report Title & Date)
+ * ├── Buttons (Chart Toggle: BP / Glucose)
+ * └── ResponsiveContainer (Recharts)
+ *     └── LineChart
+ *         ├── CustomDot (Custom Marker Logic)
+ *         ├── ReferenceLine (Normal/Abnormal Thresholds)
+ *         └── Tooltip/Legend
+ */
+
 "use client";
 
 import { useState } from 'react';
@@ -9,6 +24,11 @@ import { format, subMonths } from 'date-fns';
 import { Printer } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
+/**
+ * 프로그램 단위 용도: 차트 그래프의 데이터 포인트 커스텀 렌더링
+ * 기능:
+ * - 정상 범위를 벗어난 데이터 포인트를 빨간색으로 강조
+ */
 const CustomDot = (props: any) => {
   const { cx, cy, payload, dataKey } = props;
 
@@ -31,6 +51,13 @@ const CustomDot = (props: any) => {
 };
 
 
+/**
+ * 프로그램 단위 용도: 사용자의 건강 데이터(혈압, 혈당)를 그래프로 시각화하여 제공
+ * 기능:
+ * - 3개월 간의 건강 데이터 필터링 및 표시
+ * - 혈압/혈당 그래프 전환
+ * - 인쇄 기능 제공
+ */
 export default function ReportPage() {
   const [activeChart, setActiveChart] = useState<'bp' | 'glucose'>('bp');
 

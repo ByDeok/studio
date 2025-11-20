@@ -1,7 +1,15 @@
+// src/components/ui/input.tsx
+/**
+ * 스크립트 용도: 텍스트 입력 필드 컴포넌트
+ */
+
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * 프로그램 단위 용도: 사용자의 텍스트 입력을 받는 기본 Input 요소
+ */
 const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
   ({ className, type, ...props }, ref) => {
     return (

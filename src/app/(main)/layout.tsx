@@ -1,3 +1,15 @@
+// src/app/(main)/layout.tsx
+/**
+ * 스크립트 용도: 메인 앱의 공통 레이아웃 (네비게이션 바 포함)
+ * 
+ * 함수 호출 구조:
+ * MainAppLayout
+ * ├── <main> (Page Content)
+ * └── <nav> (Bottom Navigation)
+ *     ├── Link (Tab Item)
+ *     └── Popover (Settings Menu)
+ */
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Home, BarChart2, Users, Settings } from 'lucide-react';
@@ -19,6 +31,14 @@ const settingsNav = {
   href: '/settings', label: '설정', icon: Settings
 }
 
+/**
+ * 프로그램 단위 용도: 하단 탭 네비게이션 바를 포함한 메인 레이아웃 래퍼
+ * 기능:
+ * - 페이지 콘텐츠 렌더링
+ * - 하단 고정 네비게이션 바 제공
+ * - 현재 활성화된 탭 강조
+ * - 설정 팝오버 메뉴 제공
+ */
 export default function MainAppLayout({
   children,
 }: {

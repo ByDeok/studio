@@ -1,3 +1,14 @@
+// src/app/onboarding/device/page.tsx
+/**
+ * 스크립트 용도: 온보딩 - 기기 연결 설정 페이지
+ * 
+ * 함수 호출 구조:
+ * OnboardingDevicePage
+ * └── Card (Device Selection)
+ *     ├── Button (Device Item - Watch/BP Monitor)
+ *     └── Button (Next/Skip)
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -13,6 +24,13 @@ const devices = [
   { id: "bp", name: "스마트 혈압계", icon: HeartPulse },
 ];
 
+/**
+ * 프로그램 단위 용도: 사용자가 보유한 헬스케어 기기(워치, 혈압계 등)를 앱과 연동
+ * 기능:
+ * - 기기 선택 및 연결 시뮬레이션
+ * - 연결 상태 시각적 피드백 (로딩, 완료)
+ * - 다음 단계 이동 또는 건너뛰기
+ */
 export default function OnboardingDevicePage() {
   const [deviceStatuses, setDeviceStatuses] = useState<Record<string, DeviceStatus>>({});
   const navigate = useNavigate();

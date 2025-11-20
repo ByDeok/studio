@@ -1,3 +1,17 @@
+// src/App.tsx
+/**
+ * 스크립트 용도: 메인 애플리케이션 컴포넌트 및 라우팅 설정
+ * 
+ * 함수 호출 구조:
+ * App
+ * ├── BrowserRouter (Router Provider)
+ * ├── Routes (Route Matcher)
+ * │   ├── Route (/) -> LandingPage
+ * │   ├── Route (/onboarding/*) -> OnboardingLayout -> [Pages]
+ * │   └── Route (/dashboard, etc) -> MainLayout -> [Pages]
+ * └── Toaster (Global Toast Provider)
+ */
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from "@/components/ui/toaster";
 
@@ -15,6 +29,10 @@ import CompletePage from './app/onboarding/complete/page';
 import MainLayout from './app/(main)/layout';
 import OnboardingLayout from './app/onboarding/layout';
 
+/**
+ * 프로그램 단위 용도: 전체 앱의 라우팅 구조 정의 및 공통 레이아웃 적용
+ * @returns JSX.Element - 라우터가 적용된 앱 컴포넌트
+ */
 function App() {
   return (
     <BrowserRouter>

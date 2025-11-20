@@ -1,3 +1,13 @@
+// src/app/onboarding/complete/page.tsx
+/**
+ * 스크립트 용도: 온보딩 - 완료 및 환영 페이지
+ * 
+ * 함수 호출 구조:
+ * OnboardingCompletePage
+ * └── Card
+ *     └── PartyPopper (Icon)
+ */
+
 "use client";
 
 import { useEffect } from "react";
@@ -5,6 +15,12 @@ import { useNavigate } from "react-router-dom";
 import { PartyPopper } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * 프로그램 단위 용도: 온보딩 완료 메시지를 표시하고 대시보드로 자동 이동
+ * 기능:
+ * - 환영 메시지 및 아이콘 표시
+ * - 2.5초 후 대시보드로 자동 리다이렉트
+ */
 export default function OnboardingCompletePage() {
   const navigate = useNavigate();
 

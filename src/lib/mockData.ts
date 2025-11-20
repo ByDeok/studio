@@ -1,3 +1,8 @@
+// src/lib/mockData.ts
+/**
+ * 스크립트 용도: 개발 및 테스트를 위한 모의 데이터(Mock Data) 정의
+ */
+
 import { format, subDays, subHours, formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 
@@ -50,7 +55,12 @@ export interface Activity {
 }
 
 
-// Mock Data Instances
+/**
+ * 프로그램 단위 용도: 예시용 사용자 및 헬스케어 데이터 생성
+ * 기능:
+ * - 사용자 프로필, 미션, 건강 데이터(혈압, 혈당), 가족 멤버, 활동 로그의 Mock 객체 제공
+ */
+
 export const mockUser: User = {
     uid: 'user123',
     name: '김철수',

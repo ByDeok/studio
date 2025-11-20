@@ -1,3 +1,17 @@
+// src/app/(main)/family/page.tsx
+/**
+ * 스크립트 용도: 가족 정보 및 활동 피드 페이지
+ * 
+ * 함수 호출 구조:
+ * FamilyPage
+ * ├── Header
+ * ├── Card (Family Members)
+ * │   ├── Avatar
+ * │   └── Badge
+ * └── Card (Activity Feed)
+ *     └── Icons (HeartPulse, Pill)
+ */
+
 "use client";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,6 +27,13 @@ const activityIcons: { [key in Activity['type']]: React.ReactNode } = {
     'medication': <Pill className="w-5 h-5" />
 };
 
+/**
+ * 프로그램 단위 용도: 연결된 가족 멤버 목록과 그들의 최근 활동 내역을 표시
+ * 기능:
+ * - 가족 멤버 목록 렌더링 (역할 표시)
+ * - 활동 피드 타임라인 표시
+ * - 가족 초대 링크 복사 기능
+ */
 export default function FamilyPage() {
     const { toast } = useToast();
 

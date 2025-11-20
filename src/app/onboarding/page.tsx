@@ -1,3 +1,14 @@
+// src/app/onboarding/page.tsx
+/**
+ * 스크립트 용도: 온보딩 - 소셜 로그인 선택 페이지
+ * 
+ * 함수 호출 구조:
+ * OnboardingAuthPage
+ * └── Card (Login Options)
+ *     ├── Button (Kakao Login)
+ *     └── Button (Naver Login)
+ */
+
 "use client";
 
 import { useState } from "react";
@@ -8,6 +19,13 @@ import { KakaoIcon } from "@/components/icons/kakao";
 import { NaverIcon } from "@/components/icons/naver";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 
+/**
+ * 프로그램 단위 용도: 소셜 로그인(카카오, 네이버)을 통해 사용자를 인증하고 온보딩 프로세스를 시작
+ * 기능:
+ * - 카카오/네이버 로그인 버튼 제공
+ * - 로그인 시뮬레이션 및 로딩 상태 표시
+ * - 프로필 설정 페이지로 이동
+ */
 export default function OnboardingAuthPage() {
   const [isLoading, setIsLoading] = useState<null | "kakao" | "naver">(null);
   const navigate = useNavigate();

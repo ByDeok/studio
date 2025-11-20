@@ -1,3 +1,15 @@
+// src/app/(main)/dashboard/page.tsx
+/**
+ * 스크립트 용도: 사용자 대시보드 페이지
+ * 
+ * 함수 호출 구조:
+ * DashboardPage
+ * ├── Confetti (Mission Completion Effect)
+ * ├── Header (User Info & Notifications)
+ * └── Card (Mission List)
+ *     └── Button (Toggle Mission)
+ */
+
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -8,6 +20,13 @@ import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
 
+/**
+ * 프로그램 단위 용도: 사용자의 오늘의 미션을 관리하고, 알림을 확인하는 메인 화면
+ * 기능:
+ * - 미션 목록 표시 및 완료 처리
+ * - 미션 완료 시 폭죽 효과
+ * - 사용자 정보 및 알림 버튼 표시
+ */
 export default function DashboardPage() {
   const [missions, setMissions] = useState<Mission[]>(mockMissions);
   const [completedMissionId, setCompletedMissionId] = useState<string | null>(null);
@@ -16,6 +35,7 @@ export default function DashboardPage() {
 
   const { toast } = useToast();
 
+  // Window resize handler for Confetti
   useEffect(() => {
     const handleResize = () => {
       setWindowSize({ width: window.innerWidth, height: window.innerHeight });
