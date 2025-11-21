@@ -13,12 +13,14 @@
 import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Bell, Check, Circle } from 'lucide-react';
+import { Bell, Check, Circle, RefreshCw } from 'lucide-react';
 import { mockUser, mockMissions, Mission } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import Confetti from 'react-confetti';
+import { PageHeader } from '@/components/common/PageHeader';
+import { Section } from '@/components/common/Section';
+import { ListItem } from '@/components/common/ListItem';
 
 /**
  * 프로그램 단위 용도: 사용자의 오늘의 미션을 관리하고, 알림을 확인하는 메인 화면
@@ -78,50 +80,68 @@ export default function DashboardPage() {
     });
   };
 
+  const handleRefresh = () => {
+    setMissions(mockMissions);
+    toast({
+      title: "새로고침 완료",
+      description: "미션 목록이 업데이트되었습니다.",
+    });
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 pb-20">
       {showConfetti && <Confetti width={windowSize.width} height={windowSize.height} recycle={false} numberOfPieces={200} />}
-      <header className="flex items-center justify-between p-4 bg-background border-b">
-        <div className="flex items-center gap-3">
+      <PageHeader
+        title={`안녕하세요, ${mockUser.name}님!`}
+        leftContent={
           <Avatar>
             <AvatarImage src={`https://i.pravatar.cc/150?u=${mockUser.uid}`} />
             <AvatarFallback>{mockUser.name.charAt(0)}</AvatarFallback>
           </Avatar>
-          <h1 className="text-lg font-semibold">안녕하세요, {mockUser.name}님!</h1>
-        </div>
-        <Button variant="ghost" size="icon" onClick={handleNotificationClick}>
-          <Bell className="w-6 h-6" />
-        </Button>
-      </header>
+        }
+        rightContent={
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" onClick={handleRefresh}>
+              <RefreshCw className="w-6 h-6" />
+            </Button>
+            <Button variant="ghost" size="icon" onClick={handleNotificationClick}>
+              <Bell className="w-6 h-6" />
+            </Button>
+          </div>
+        }
+      />
       
-      <main className="flex-1 p-4 space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>오늘 할 일 {remainingMissions > 0 ? `${remainingMissions}개 남았어요` : '모두 완료!'}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-3">
-              {missions.map(mission => (
-                <button
-                  key={mission.id}
-                  onClick={() => handleMissionToggle(mission.id)}
-                  className={cn(
-                    "w-full flex items-center justify-between p-4 rounded-lg transition-all",
-                    mission.isCompleted ? "bg-secondary text-muted-foreground" : "bg-background border",
-                    completedMissionId === mission.id && "bg-primary/20"
-                  )}
-                >
-                  <span className="font-medium">{mission.title}</span>
-                  {mission.isCompleted ? (
+      <main className="flex-1 p-4 space-y-6 max-w-3xl mx-auto w-full">
+        <Section title={`오늘 할 일 ${remainingMissions > 0 ? `${remainingMissions}개 남았어요` : '모두 완료!'}`}>
+          <div className="space-y-3">
+            {missions.map(mission => (
+              <ListItem
+                key={mission.id}
+                onClick={() => handleMissionToggle(mission.id)}
+                className={cn(
+                  "shadow-sm",
+                  mission.isCompleted ? "bg-secondary/50 text-muted-foreground border-transparent" : "bg-card border-border hover:border-primary/50",
+                  completedMissionId === mission.id && "bg-primary/10 border-primary ring-1 ring-primary/20"
+                )}
+                middle={
+                  <span className={cn(
+                    "font-medium transition-all",
+                    mission.isCompleted && "line-through text-muted-foreground decoration-slate-400"
+                  )}>
+                    {mission.title}
+                  </span>
+                }
+                end={
+                  mission.isCompleted ? (
                     <Check className="w-6 h-6 text-primary" />
                   ) : (
                     <Circle className="w-6 h-6 text-muted-foreground" />
-                  )}
-                </button>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                  )
+                }
+              />
+            ))}
+          </div>
+        </Section>
       </main>
     </div>
   );

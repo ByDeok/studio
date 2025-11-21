@@ -1,5 +1,8 @@
 import React from 'react';
 
+/**
+ * 프로그램 단위 용도: 애플리케이션 로고 아이콘 컴포넌트
+ */
 export const Logo = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     viewBox="0 0 24 24"

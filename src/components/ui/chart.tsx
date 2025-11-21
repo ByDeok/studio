@@ -34,6 +34,14 @@ function useChart() {
   return context
 }
 
+/**
+ * 프로그램 단위 용도: 차트 컨테이너 및 스타일 관리 컴포넌트 (Recharts 기반)
+ * 
+ * 로직 및 데이터 흐름:
+ * - Recharts 라이브러리를 래핑하여 테마(ChartConfig)를 주입하고 스타일을 관리합니다.
+ * - ChartContext를 통해 하위 컴포넌트(Tooltip, Legend)에 설정 정보를 전달합니다.
+ * - CSS 변수를 동적으로 생성하여 차트 색상을 제어합니다.
+ */
 const ChartContainer = React.forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {

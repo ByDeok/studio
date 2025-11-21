@@ -13,97 +13,64 @@
 
 ```mermaid
 graph TD
-    App[App.tsx<br/>라우팅 설정] --> ProjectCreate[ProjectCreate<br/>프로젝트 생성]
-    App --> Layout[Layout<br/>메인 레이아웃]
+    %% Entry Point
+    Root[main.tsx] --> App
     
-    Layout --> SaveIndicator[SaveIndicator<br/>저장 상태]
-    Layout --> WizardStep[WizardStep<br/>Wizard 단계]
-    Layout --> BusinessPlanViewer[BusinessPlanViewer<br/>사업계획서 뷰어]
+    %% App & Router Structure
+    App[App.tsx] --> Router[BrowserRouter]
+    App --> Toaster["Toaster (Global Toast)"]
     
-    WizardStep --> QuestionForm[QuestionForm<br/>질문 폼]
-    WizardStep --> FinancialSimulation[FinancialSimulation<br/>재무 시뮬레이션]
-    WizardStep --> PMFSurvey[PMFSurvey<br/>PMF 진단]
+    Router --> Routes[Routes]
     
-    ProjectCreate --> UI_Button[Button]
-    ProjectCreate --> UI_Input[Input]
-    ProjectCreate --> UI_Card[Card]
+    %% Route: Landing
+    Routes -->|Route /| LandingPage[LandingPage]
+    LandingPage --> LandingUI["Logo, Button"]
     
-    QuestionForm --> UI_Input
-    QuestionForm --> UI_Textarea[Textarea]
+    %% Route Group: Onboarding
+    Routes -->|"Route /onboarding/*"| OnboardingLayout[OnboardingLayout]
+    OnboardingLayout --> OnboardingContent{"Onboarding Pages"}
     
-    FinancialSimulation --> UI_Input
-    FinancialSimulation --> UI_Badge[Badge]
-    FinancialSimulation --> Recharts[Recharts<br/>차트 라이브러리]
+    OnboardingContent -->|/| OnboardingPage[OnboardingPage]
+    OnboardingContent -->|/device| DevicePage[DevicePage]
+    OnboardingContent -->|/profile| ProfilePage[ProfilePage]
+    OnboardingContent -->|/complete| CompletePage[CompletePage]
     
-    PMFSurvey --> UI_Card
-    PMFSurvey --> UI_Badge
-    PMFSurvey --> UI_Progress[Progress]
-    PMFSurvey --> UI_Button
+    %% Route Group: Main App
+    Routes -->|"Route /dashboard, /report, /family"| MainLayout[MainLayout]
     
-    BusinessPlanViewer --> UI_Button
-    BusinessPlanViewer --> UI_Badge
-    BusinessPlanViewer --> UI_Spinner[Spinner]
-    BusinessPlanViewer --> ReactMarkdown[ReactMarkdown<br/>마크다운 렌더러]
+    %% Main Layout Structure
+    MainLayout --> MainContent{"Main Pages"}
+    MainLayout --> BottomNav["Bottom Navigation"]
+    MainLayout --> SettingsMenu["Settings Popover"]
     
-    Layout --> UI_Progress
+    %% Main Pages
+    MainContent -->|/dashboard| DashboardPage[DashboardPage]
+    MainContent -->|/report| ReportPage[ReportPage]
+    MainContent -->|/family| FamilyPage[FamilyPage]
     
-    style App fill:#e1f5ff
-    style Layout fill:#fff4e1
-    style ProjectCreate fill:#e8f5e9
-    style WizardStep fill:#f3e5f5
-    style UI_Button fill:#ffebee
-    style UI_Input fill:#ffebee
-    style UI_Card fill:#ffebee
-    style UI_Textarea fill:#ffebee
-    style UI_Badge fill:#ffebee
-    style UI_Progress fill:#ffebee
-    style UI_Spinner fill:#ffebee
-```
-
-## 상태 관리 구조
-
-```mermaid
-graph LR
-    subgraph Stores
-        ProjectStore[useProjectStore<br/>프로젝트 상태]
-        WizardStore[useWizardStore<br/>Wizard 상태]
-        FinancialStore[useFinancialStore<br/>재무 상태]
-        PMFStore[usePMFStore<br/>PMF 진단 상태]
-    end
+    %% Page Details: Dashboard
+    DashboardPage --> DashHeader["Header & User Info"]
+    DashboardPage --> MissionCard["Mission List Card"]
+    DashboardPage --> Confetti["Confetti Effect"]
     
-    subgraph Hooks
-        AutoSave[useAutoSave<br/>자동 저장]
-        FinancialCalc[useFinancialCalc<br/>재무 계산]
-    end
+    %% Page Details: Report
+    ReportPage --> ReportHeader["Header & Filters"]
+    ReportPage --> ChartSection["Recharts Visualization"]
+    ChartSection --> LineChart[LineChart]
+    ChartSection --> CustomDot[CustomDot]
     
-    subgraph Components
-        ProjectCreate_C[ProjectCreate]
-        WizardStep_C[WizardStep]
-        QuestionForm_C[QuestionForm]
-        FinancialSimulation_C[FinancialSimulation]
-        PMFSurvey_C[PMFSurvey]
-        Layout_C[Layout]
-    end
+    %% Page Details: Family
+    FamilyPage --> FamilyList["Family Members Card"]
+    FamilyPage --> ActivityFeed["Activity Feed Card"]
     
-    ProjectStore --> ProjectCreate_C
-    ProjectStore --> Layout_C
+    %% Styling
+    classDef layout fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
+    classDef page fill:#fff9c4,stroke:#fbc02d,stroke-width:2px;
+    classDef component fill:#f3e5f5,stroke:#7b1fa2,stroke-width:1px;
     
-    WizardStore --> WizardStep_C
-    WizardStore --> QuestionForm_C
-    WizardStore --> Layout_C
-    
-    FinancialStore --> FinancialSimulation_C
-    PMFStore --> PMFSurvey_C
-    
-    AutoSave --> QuestionForm_C
-    FinancialCalc --> FinancialSimulation_C
-    
-    style ProjectStore fill:#bbdefb
-    style WizardStore fill:#bbdefb
-    style FinancialStore fill:#bbdefb
-    style PMFStore fill:#bbdefb
-    style AutoSave fill:#c8e6c9
-    style FinancialCalc fill:#c8e6c9
+    class MainLayout,OnboardingLayout layout;
+    class LandingPage,OnboardingPage,DevicePage,ProfilePage,CompletePage,DashboardPage,ReportPage,FamilyPage page;
+    class BottomNav,SettingsMenu,MissionCard,ChartSection,FamilyList,ActivityFeed component;
 ```
 
 ---
@@ -112,92 +79,72 @@ graph LR
 
 ### 1. 레이어 구조
 
-프로젝트는 명확한 레이어 구조를 따릅니다:
+이 프로젝트는 **Next.js의 App Router 파일 구조**를 차용하면서도 **Vite(SPA)** 환경에서 동작하는 독특한 하이브리드 구조를 채택하고 있습니다.
 
 ```
 📦 src/
-├─ 🎨 components/          # UI 컴포넌트 레이어
-│  ├─ ui/                  # 재사용 가능한 기본 UI 컴포넌트
-│  ├─ wizard/              # 비즈니스 로직이 포함된 복합 컴포넌트
-│  ├─ Layout.tsx           # 레이아웃 컴포넌트
-│  └─ SaveIndicator.tsx    # 상태 표시 컴포넌트
+├─ 📱 app/                 # 페이지 및 라우팅 레이어 (Feature 중심)
+│  ├─ (main)/              # 대시보드 등 메인 앱 영역
+│  │  ├─ dashboard/
+│  │  ├─ family/
+│  │  └─ report/
+│  ├─ onboarding/          # 온보딩 프로세스 영역
+│  └─ layout.tsx           # 공통 레이아웃
 │
-├─ 📄 pages/               # 페이지 레이어 (라우트 단위)
-│  ├─ ProjectCreate.tsx
-│  ├─ WizardStep.tsx
-│  └─ BusinessPlanViewer.tsx
+├─ 🎨 components/          # 컴포넌트 레이어
+│  ├─ ui/                  # Atomic Design의 Atoms/Molecules (shadcn/ui)
+│  ├─ common/              # 범용 컴포넌트 (Header, ListItem 등)
+│  ├─ layout/              # 구조적 컴포넌트
+│  └─ icons/               # 아이콘 에셋
 │
-├─ 💾 stores/              # 상태 관리 레이어 (Zustand)
-│  ├─ useProjectStore.ts
-│  ├─ useWizardStore.ts
-│  ├─ useFinancialStore.ts
-│  └─ usePMFStore.ts
+├─ 🧠 ai/                  # AI 로직 레이어
+│  ├─ dev.ts               # Genkit 개발 설정
+│  └─ genkit.ts            # Genkit 설정
 │
-├─ 🔧 hooks/               # 커스텀 훅 레이어
-│  ├─ useAutoSave.ts
-│  └─ useFinancialCalc.ts
+├─ 🔧 lib/                 # 유틸리티 레이어
+│  ├─ utils.ts             # Tailwind merge 등 헬퍼
+│  └─ mockData.ts          # 목업 데이터
 │
-├─ 📐 types/               # 타입 정의 레이어
-│  ├─ index.ts
-│  └─ mockData.ts
-│
-└─ 🛠 lib/                 # 유틸리티 레이어
-   └─ utils.ts
+└─ ⚓ hooks/                # 커스텀 훅 레이어
 ```
 
 ### 2. 데이터 흐름
 
 ```
-User Input → Component → Store (Zustand) → LocalStorage (Persist)
-                ↓
-            Auto-save Hook
-                ↓
-         UI Feedback (SaveIndicator)
+[User Interaction] 
+       ↓
+[Page Component (src/app/**/page.tsx)]
+       ↓
+[Custom Hooks / Zustand Store] (상태 업데이트)
+       ↓
+[API / Genkit AI Service] (비동기 요청)
+       ↓
+[UI Components (src/components/ui/**)] (렌더링)
 ```
 
 ---
 
 ## 컴포넌트 분류
 
-### A. Presentation Components (UI 컴포넌트)
+### A. Primitives (shadcn/ui)
+프로젝트의 가장 강력한 자산은 `components/ui`에 구축된 디자인 시스템입니다.
 
-**특징**: 재사용 가능, 상태 없음, props 기반
+| 컴포넌트 | 역할 | 의존성 |
+|---------|------|-------|
+| `Card` | 컨텐츠 컨테이너 | Radix UI, Tailwind |
+| `Button` | 액션 트리거 | Radix Slot |
+| `Form` | 입력 폼 래퍼 | React Hook Form, Zod |
+| `Chart` | 데이터 시각화 | Recharts |
+| `Toast` | 알림 | Radix Toast |
 
-| 컴포넌트 | 역할 | 재사용성 |
-|---------|------|---------|
-| `Button` | 버튼 UI | ⭐⭐⭐⭐⭐ |
-| `Card` | 카드 레이아웃 | ⭐⭐⭐⭐⭐ |
-| `Input` | 텍스트 입력 | ⭐⭐⭐⭐⭐ |
-| `Textarea` | 긴 텍스트 입력 | ⭐⭐⭐⭐⭐ |
-| `Badge` | 뱃지 표시 | ⭐⭐⭐⭐⭐ |
-| `Progress` | 진행률 바 | ⭐⭐⭐⭐ |
-| `Spinner` | 로딩 표시 | ⭐⭐⭐⭐ |
+### B. Feature Pages
+비즈니스 로직이 집중된 페이지 컴포넌트들입니다.
 
-**장점**:
-- ✅ 높은 재사용성
-- ✅ 테스트 용이
-- ✅ variant, size 등 props로 다양한 스타일 지원
-- ✅ TypeScript로 타입 안정성 보장
-
-### B. Container Components (비즈니스 로직 포함)
-
-**특징**: 상태 관리, 데이터 페칭, 비즈니스 로직
-
-| 컴포넌트 | 역할 | 복잡도 |
-|---------|------|--------|
-| `ProjectCreate` | 프로젝트 생성 흐름 | ⭐⭐ |
-| `WizardStep` | Wizard 단계 제어 | ⭐⭐⭐ |
-| `QuestionForm` | 동적 폼 렌더링 | ⭐⭐⭐ |
-| `FinancialSimulation` | 재무 계산 및 차트 | ⭐⭐⭐⭐ |
-| `PMFSurvey` | 설문 및 리포트 | ⭐⭐⭐⭐ |
-| `BusinessPlanViewer` | 문서 생성 및 표시 | ⭐⭐⭐ |
-
-### C. Layout Components
-
-| 컴포넌트 | 역할 |
-|---------|------|
-| `Layout` | 헤더 + 사이드바 + 메인 콘텐츠 |
-| `SaveIndicator` | 저장 상태 피드백 |
+| 페이지 | 경로 | 주요 기능 |
+|-------|------|----------|
+| `Dashboard` | `/dashboard` | 미션 확인, 사용자 상태 요약 |
+| `Report` | `/report` | 건강 데이터 시각화 (Recharts) |
+| `Onboarding` | `/onboarding/*` | 사용자 프로필 및 디바이스 설정 (Wizard 패턴) |
 
 ---
 
@@ -205,218 +152,76 @@ User Input → Component → Store (Zustand) → LocalStorage (Persist)
 
 ### ✅ 장점
 
-1. **명확한 관심사 분리 (SoC)**
-   - UI 컴포넌트와 비즈니스 로직 컴포넌트가 명확히 구분됨
-   - 상태 관리가 Store로 중앙화되어 있음
+1.  **표준화된 UI 시스템**
+    *   `class-variance-authority (cva)`를 사용하여 스타일 변형(variant) 관리가 체계적입니다.
+    *   Tailwind CSS와의 결합으로 스타일 오버라이딩이 매우 쉽습니다.
 
-2. **높은 재사용성**
-   - 모든 UI 컴포넌트가 범용적으로 설계됨
-   - Props 기반으로 다양한 변형 지원 (variant, size 등)
+2.  **명확한 관심사 분리**
+    *   `ui/` 폴더는 순수 스타일/인터랙션만 담당하고, 비즈니스 로직은 `app/` 폴더에 격리되어 있습니다.
+    *   `lib/utils.ts`를 통해 공통 로직을 중앙화했습니다.
 
-3. **타입 안전성**
-   - 모든 컴포넌트가 TypeScript로 작성됨
-   - Interface와 Type으로 명확한 계약 정의
-
-4. **상태 관리 효율성**
-   - Zustand의 경량 상태 관리
-   - LocalStorage persist로 데이터 손실 방지
-   - Selector 패턴으로 불필요한 리렌더링 최소화
-
-5. **모듈화**
-   - 각 기능이 독립적인 파일로 분리됨
-   - 의존성이 명확함
+3.  **유연한 라우팅 구조**
+    *   폴더 구조 자체가 라우팅을 암시하도록 구성되어 있어(Next.js 스타일), 개발자가 파일 위치만 보고도 URL 구조를 예측할 수 있습니다.
 
 ### ⚠️ 개선 필요 영역
 
-1. **성능 최적화 부족**
-   - React.memo 미사용
-   - useCallback/useMemo 미사용
-   - 큰 리스트 렌더링 시 가상화 미적용
+1.  **페이지 컴포넌트의 비대화**
+    *   `dashboard/page.tsx`나 `report/page.tsx`에 데이터 페칭, 가공, 렌더링 로직이 혼재될 가능성이 높습니다.
+    *   -> *Container-Presenter 패턴*이나 *Custom Hook*으로 로직 분리가 필요합니다.
 
-2. **에러 처리 부족**
-   - Error Boundary 미구현
-   - API 에러 처리 로직 부재 (현재는 Mock이지만)
-
-3. **테스트 코드 부재**
-   - Unit Test 없음
-   - Integration Test 없음
-
-4. **접근성 (A11y) 개선 필요**
-   - ARIA 속성 부족
-   - 키보드 네비게이션 미흡
+2.  **AI 로직의 결합도**
+    *   UI 컴포넌트 내에서 AI 함수를 직접 호출하는 경우, 테스트가 어려워질 수 있습니다.
+    *   -> AI 서비스 레이어를 별도로 두어 추상화하는 것이 좋습니다.
 
 ---
 
 ## 개선 가능성
 
-### 🎯 즉시 적용 가능한 개선사항
+### 🎯 단기 개선 (Refactoring)
 
-#### 1. 성능 최적화
+#### 1. 컴포넌트 분할
+`DashboardPage` 내의 미션 리스트나 `ReportPage`의 차트 섹션을 별도 컴포넌트로 분리하여 가독성을 높입니다.
 
-**Before:**
 ```typescript
-export const QuestionForm: React.FC<QuestionFormProps> = ({ questions, stepId }) => {
-  const handleChange = (questionId: string, value: any) => {
-    updateStepData(stepId, questionId, value);
+// Before: src/app/dashboard/page.tsx
+return (
+  <div>
+    {/* 100줄 이상의 미션 리스트 렌더링 코드 */}
+  </div>
+)
+
+// After: src/app/dashboard/components/MissionList.tsx
+return (
+  <div>
+    <MissionList missions={data} />
+  </div>
+)
+```
+
+#### 2. AI Service 추상화
+AI 호출을 위한 전용 Hook을 만듭니다.
+
+```typescript
+// hooks/useAiCoach.ts
+export const useAiCoach = () => {
+  const generateAdvice = async (data: HealthData) => {
+    // Genkit 호출 로직
   };
-  // ...
-}
-```
-
-**After (React.memo + useCallback):**
-```typescript
-export const QuestionForm: React.FC<QuestionFormProps> = React.memo(({ questions, stepId }) => {
-  const handleChange = useCallback((questionId: string, value: any) => {
-    updateStepData(stepId, questionId, value);
-  }, [stepId, updateStepData]);
-  // ...
-});
-```
-
-**예상 효과**: 불필요한 리렌더링 40-60% 감소
-
----
-
-#### 2. 컴포넌트 분리
-
-**현재 문제**: `FinancialSimulation`이 너무 많은 책임을 가짐 (300+ 줄)
-
-**개선안**:
-```
-FinancialSimulation/
-├─ index.tsx              # 메인 컴포넌트
-├─ FinancialInputForm.tsx # 입력 폼
-├─ MetricsSummary.tsx     # 지표 요약
-├─ BEPChart.tsx           # 손익분기점 차트
-└─ UnitEconomicsChart.tsx # Unit Economics 차트
-```
-
-**예상 효과**:
-- 가독성 30% 향상
-- 개별 차트 재사용 가능
-- 테스트 용이
-
----
-
-#### 3. Custom Hook 추가
-
-**제안**:
-```typescript
-// useFormValidation.ts
-export const useFormValidation = (schema: ZodSchema) => {
-  // 폼 검증 로직 중앙화
-};
-
-// useDebounce.ts
-export const useDebounce = <T,>(value: T, delay: number) => {
-  // Debounce 로직 재사용
-};
-
-// useChartData.ts
-export const useChartData = (input: FinancialInput) => {
-  // 차트 데이터 계산 로직 분리
+  return { generateAdvice };
 };
 ```
 
----
+### 🚀 장기 개선 (Architecture)
 
-#### 4. Error Boundary 추가
+1.  **FSD (Feature-Sliced Design) 고려**
+    *   현재 구조도 훌륭하지만, 프로젝트가 커지면 `features/` 폴더를 도입하여 기능 단위로 응집도를 높이는 것을 고려해볼 수 있습니다.
 
-**추가 필요**:
-```typescript
-// components/ErrorBoundary.tsx
-class ErrorBoundary extends React.Component {
-  // 에러 캐치 및 폴백 UI 표시
-}
-
-// App.tsx에 적용
-<ErrorBoundary>
-  <Router>
-    <Routes>...</Routes>
-  </Router>
-</ErrorBoundary>
-```
-
----
-
-### 🚀 중기 개선 사항
-
-#### 1. 상태 관리 최적화
-
-**Zustand Selector 패턴 적용**:
-```typescript
-// Before
-const { steps, currentStep, wizardData } = useWizardStore();
-
-// After (필요한 것만 구독)
-const steps = useWizardStore((state) => state.steps);
-const currentStep = useWizardStore((state) => state.currentStep);
-```
-
-#### 2. Code Splitting
-
-```typescript
-// 라우트 기반 Code Splitting
-const ProjectCreate = lazy(() => import('./pages/ProjectCreate'));
-const WizardStep = lazy(() => import('./pages/WizardStep'));
-const BusinessPlanViewer = lazy(() => import('./pages/BusinessPlanViewer'));
-
-// Suspense로 감싸기
-<Suspense fallback={<Spinner />}>
-  <Routes>...</Routes>
-</Suspense>
-```
-
-**예상 효과**: 초기 로딩 시간 40% 감소
-
-#### 3. 테스트 추가
-
-```typescript
-// QuestionForm.test.tsx
-describe('QuestionForm', () => {
-  it('renders all questions', () => {});
-  it('validates required fields', () => {});
-  it('calls auto-save after input', () => {});
-});
-```
-
----
-
-### 📊 개선 우선순위 매트릭스
-
-| 개선사항 | 영향도 | 난이도 | 우선순위 |
-|---------|-------|-------|---------|
-| React.memo 적용 | 높음 | 낮음 | 🔥 1순위 |
-| Custom Hook 추가 | 중간 | 낮음 | 🔥 1순위 |
-| 컴포넌트 분리 | 높음 | 중간 | ⭐ 2순위 |
-| Error Boundary | 중간 | 낮음 | ⭐ 2순위 |
-| Zustand Selector | 중간 | 낮음 | ⭐ 2순위 |
-| Code Splitting | 높음 | 중간 | ⭐⭐ 3순위 |
-| 테스트 코드 | 높음 | 높음 | ⭐⭐ 3순위 |
-| 접근성 개선 | 중간 | 중간 | ⭐⭐⭐ 4순위 |
+2.  **상태 관리 고도화**
+    *   현재 전역 상태 관리 도구가 명시적으로 보이지 않으나(Context API 추정), 복잡도가 증가하면 `Zustand`나 `Jotai` 도입을 고려합니다.
 
 ---
 
 ## 결론
 
-### 현재 상태 평가: **B+ (85/100)**
-
-**강점**:
-- ✅ 명확한 아키텍처 구조
-- ✅ 높은 재사용성의 UI 컴포넌트
-- ✅ 타입 안전성
-- ✅ 효율적인 상태 관리
-
-**개선 영역**:
-- ⚠️ 성능 최적화 부족
-- ⚠️ 에러 처리 미흡
-- ⚠️ 테스트 코드 부재
-
-### 권장사항
-
-1. **단기 (1-2주)**: React.memo, useCallback 적용으로 성능 최적화
-2. **중기 (1개월)**: 컴포넌트 분리 및 Custom Hook 추가
-3. **장기 (2-3개월)**: 테스트 코드 작성 및 접근성 개선
-
-현재 MVP 단계에서는 **충분히 효율적이고 확장 가능한 구조**를 갖추고 있습니다.
+**AS-Digt-HC-Dev-FE**의 컴포넌트 구조는 **확장성**과 **유지보수성** 측면에서 매우 우수하게 설계되었습니다. 특히 shadcn/ui를 활용한 `ui` 컴포넌트 레이어는 프로덕션 레벨의 품질을 보여줍니다. 라우트별 비즈니스 로직 분리만 지속적으로 관리한다면 훌륭한 프로젝트가 될 것입니다.
 

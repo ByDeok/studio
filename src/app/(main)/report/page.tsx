@@ -17,12 +17,13 @@
 
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { mockUser, mockHealthMetrics, HealthMetric } from "@/lib/mockData";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, DotProps } from 'recharts';
+import { Card } from "@/components/ui/card";
+import { mockUser, mockHealthMetrics } from "@/lib/mockData";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
 import { format, subMonths } from 'date-fns';
 import { Printer } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { PageHeader } from '@/components/common/PageHeader';
 
 /**
  * 프로그램 단위 용도: 차트 그래프의 데이터 포인트 커스텀 렌더링
@@ -84,16 +85,20 @@ export default function ReportPage() {
         </div>
         
         <Card className="p-2 sm:p-6 print:border-none print:shadow-none" id="report-content">
-            <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center p-4 sm:p-6 bg-gray-50 rounded-t-lg print:bg-white">
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-800">{mockUser.name}님 건강 리포트</h1>
-                    <p className="text-gray-500">{format(threeMonthsAgo, 'yyyy.MM.dd')} - {format(new Date(), 'yyyy.MM.dd')} (최근 3개월)</p>
-                </div>
-                <div className="text-right mt-4 sm:mt-0">
-                    <p className="font-semibold">{mockUser.name} ({mockUser.age}세)</p>
-                    <p className="text-sm text-gray-600">{mockUser.conditions.join(', ')}</p>
-                </div>
-            </header>
+            <PageHeader
+                title={`${mockUser.name}님 건강 리포트`}
+                className="rounded-t-lg print:bg-white bg-gray-50 border-b-0 pb-0"
+                leftContent={null}
+                rightContent={
+                    <div className="text-right mt-4 sm:mt-0">
+                        <p className="font-semibold">{mockUser.name} ({mockUser.age}세)</p>
+                        <p className="text-sm text-gray-600">{mockUser.conditions.join(', ')}</p>
+                    </div>
+                }
+            />
+            <div className="px-4 sm:px-6 pb-4 bg-gray-50 print:bg-white">
+                 <p className="text-gray-500">{format(threeMonthsAgo, 'yyyy.MM.dd')} - {format(new Date(), 'yyyy.MM.dd')} (최근 3개월)</p>
+            </div>
             
             <main className="p-4 sm:p-6">
                 <div className="print:hidden mb-6 flex justify-center">
@@ -162,7 +167,7 @@ export default function ReportPage() {
         </Card>
       </div>
 
-       <style jsx global>{`
+       <style dangerouslySetInnerHTML={{__html: `
         @media print {
           body * {
             visibility: hidden;
@@ -186,7 +191,7 @@ export default function ReportPage() {
             margin: 20mm;
           }
         }
-      `}</style>
+      `}} />
 
     </div>
   );

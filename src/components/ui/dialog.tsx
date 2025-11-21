@@ -6,6 +6,14 @@ import { X } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
+/**
+ * 프로그램 단위 용도: 모달 대화상자(Dialog) 컴포넌트 (Radix UI Dialog 기반)
+ * 
+ * 로직 및 데이터 흐름:
+ * - Radix UI의 Dialog Primitives를 사용하여 접근성과 키보드 상호작용을 보장합니다.
+ * - DialogContent는 포탈(Portal)을 통해 body 바로 아래에 렌더링되어 z-index 문제를 방지합니다.
+ * - 배경 흐림 효과(Overlay)와 애니메이션이 적용되어 있습니다.
+ */
 const Dialog = DialogPrimitive.Root
 
 const DialogTrigger = DialogPrimitive.Trigger

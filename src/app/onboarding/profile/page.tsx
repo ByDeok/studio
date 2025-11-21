@@ -16,10 +16,9 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Checkbox } from "@/components/ui/checkbox";
+import { WizardLayout } from "@/components/layout/WizardLayout";
 
 type Step = "name" | "birthdate" | "conditions";
 
@@ -65,16 +64,32 @@ export default function OnboardingProfilePage() {
   const progressValue =
     step === "name" ? 33 : step === "birthdate" ? 66 : 100;
 
+  const getStepTitle = () => {
+    switch(step) {
+        case "name": return "이름을 알려주세요";
+        case "birthdate": return "생년월일을 알려주세요";
+        case "conditions": return "건강 정보를 알려주세요";
+    }
+  }
+
   return (
-    <Card className="w-full">
-      <CardHeader>
-        <Progress value={progressValue} className="mb-4 h-2" />
-        {step === "name" && <CardTitle>이름을 알려주세요</CardTitle>}
-        {step === "birthdate" && <CardTitle>생년월일을 알려주세요</CardTitle>}
-        {step === "conditions" && <CardTitle>건강 정보를 알려주세요</CardTitle>}
-        <CardDescription>맞춤 관리를 위해 필요해요.</CardDescription>
-      </CardHeader>
-      <CardContent>
+    <WizardLayout
+      title={getStepTitle()}
+      description="맞춤 관리를 위해 필요해요."
+      progress={progressValue}
+      footer={
+        <>
+          {step !== "name" && (
+            <Button size="xl" variant="outline" onClick={handleBack} className="w-1/3">
+              이전
+            </Button>
+          )}
+          <Button size="xl" onClick={handleNext} className="w-full">
+            {step === "conditions" ? "거의 다 왔어요!" : "다음"}
+          </Button>
+        </>
+      }
+    >
         <div className="space-y-6">
           {step === "name" && (
             <div className="space-y-2">
@@ -138,17 +153,6 @@ export default function OnboardingProfilePage() {
             </div>
           )}
         </div>
-        <div className="mt-8 flex gap-4">
-          {step !== "name" && (
-            <Button size="xl" variant="outline" onClick={handleBack} className="w-1/3">
-              이전
-            </Button>
-          )}
-          <Button size="xl" onClick={handleNext} className="w-full">
-            {step === "conditions" ? "거의 다 왔어요!" : "다음"}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+    </WizardLayout>
   );
 }

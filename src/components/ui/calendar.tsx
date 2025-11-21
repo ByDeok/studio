@@ -9,6 +9,14 @@ import { buttonVariants } from "@/components/ui/button"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 
+/**
+ * 프로그램 단위 용도: 달력 컴포넌트 (react-day-picker 기반)
+ * 
+ * 로직 및 데이터 흐름:
+ * - react-day-picker 라이브러리를 사용하여 달력을 렌더링합니다.
+ * - Shadcn UI 스타일을 적용하여 일관된 디자인을 제공합니다.
+ * - 날짜 선택, 범위 선택 등의 기능을 props로 전달받아 처리합니다.
+ */
 function Calendar({
   className,
   classNames,

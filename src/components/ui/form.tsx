@@ -28,6 +28,14 @@ const FormFieldContext = React.createContext<FormFieldContextValue>(
   {} as FormFieldContextValue
 )
 
+/**
+ * 프로그램 단위 용도: 폼 필드 컴포넌트 (react-hook-form 기반)
+ * 
+ * 로직 및 데이터 흐름:
+ * - react-hook-form의 Controller를 래핑하여 상태 관리를 단순화합니다.
+ * - FormItem, FormLabel, FormControl, FormMessage 등의 컴포넌트와 함께 사용되어
+ *   접근성(a11y)과 유효성 검사 메시지 처리를 자동화합니다.
+ */
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>

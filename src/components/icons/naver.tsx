@@ -1,3 +1,8 @@
+import React from 'react';
+
+/**
+ * 프로그램 단위 용도: 네이버 로고 아이콘 컴포넌트
+ */
 export const NaverIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
