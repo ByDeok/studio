@@ -13,7 +13,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { PartyPopper } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 
 /**
  * 프로그램 단위 용도: 온보딩 완료 메시지를 표시하고 대시보드로 자동 이동

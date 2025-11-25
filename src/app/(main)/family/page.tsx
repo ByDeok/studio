@@ -17,7 +17,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { mockFamilyMembers, mockActivityFeed, FamilyMember, Activity } from "@/lib/mockData";
+import { mockFamilyMembers, mockActivityFeed, type Activity } from "@/lib/mockData";
 import { Mail, HeartPulse, Pill, ChevronsRight } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { PageHeader } from "@/components/common/PageHeader";
